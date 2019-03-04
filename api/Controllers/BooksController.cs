@@ -62,7 +62,8 @@ namespace Fisher.Bookstore.Api.Controllers
             return Ok(book);
         }
 
-        [HttpPost]
+     
+ [HttpPost]
         public IActionResult Post([FromBody] Book book)
         {
             if (book == null)
@@ -112,5 +113,6 @@ namespace Fisher.Bookstore.Api.Controllers
 
             return NoContent();
         }
+
     }
 }
