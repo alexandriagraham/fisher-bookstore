@@ -34,6 +34,14 @@ namespace Fisher.Bookstore.Api
         {
             services.AddDbContext<BookstoreContext>(options => 
         options.UseNpgsql(Configuration.GetConnectionString("BookstoreContext")));
+
+            services.AddCors(options => {
+                options.AddPolicy("CorsPolicy", builder => {
+                    builder.WithOrigins("https://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -57,6 +65,7 @@ namespace Fisher.Bookstore.Api
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWTConfiguration.Key"]))
                 };
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +73,9 @@ namespace Fisher.Bookstore.Api
         {
             app.UseAuthentication();
             app.UseHttpsRedirection();
+            app.UseCors("CorsPolicy");
             app.UseMvc();
+
         }
     }
 }
